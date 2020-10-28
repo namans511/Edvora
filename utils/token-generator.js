@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 exports.generateRefreshToken = (email, userKey) => {
   const token = jwt.sign(
     {
+      type: "refresh",
       email: email,
     },
     userKey
@@ -14,6 +15,7 @@ exports.generateRefreshToken = (email, userKey) => {
 exports.generateAccessToken = (email) => {
   const token = jwt.sign(
     {
+      type: "access",
       email: email,
     },
     process.env.APP_TOKEN_KEY,

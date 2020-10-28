@@ -7,8 +7,8 @@ const router = express.Router();
 const Student = require("../models/student");
 const authController = require("../controllers/auth");
 
-// POST => /auth/verifyOtp
-router.post("/verifyOtp", authController.verifyOtp);
+// POST => /auth/verifyotp
+router.post("/verifyotp", authController.verifyOtp);
 
 // POST => /auth/signup
 router.post("/signup", authController.signup);

@@ -8,6 +8,7 @@ const express = require("express");
 const app = express();
 
 const authRoutes = require("./routes/auth");
+const adminRoutes = require("./routes/admin");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 //Routing requests
 app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 
 //handling errors
 app.use((error, req, res, next) => {

@@ -1,15 +1,15 @@
 //package imports
-const jwt = require("jsonwebtoken");
 const bcryct = require("bcryptjs");
 const otpGenerator = require("otp-generator");
 const { validationResult } = require("express-validator");
 
 //custom imports
-const Student = require("../models/student");
 const Otp = require("../models/otp");
+const College = require("../models/college");
 const tokenGenerator = require("../utils/token-generator");
 const castUser = require("../utils/castUser");
 const saveAndSendOtp = require("../utils/sendOtp");
+const collegeList = require("../utils/college-list");
 
 // signup / registering user
 exports.signup = (req, res, next) => {
