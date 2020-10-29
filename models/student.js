@@ -19,6 +19,10 @@ const studentSchema = new Schema({
     type: String,
     require: true,
   },
+  profileIsCompleted: {
+    type: String,
+    require: true,
+  },
   userKey: {
     type: String,
     required: true,

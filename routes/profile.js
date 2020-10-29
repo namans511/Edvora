@@ -7,7 +7,7 @@ const router = express.Router();
 const profileController = require("../controllers/profile");
 const isAuth = require("../middleware/isAuth");
 
-// POST => /auth/update
+// POST => /profile/update
 router.post("/update", isAuth, profileController.updateProfile);
 
 module.exports = router;

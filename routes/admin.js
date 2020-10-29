@@ -17,4 +17,10 @@ router.get("/listbranches", adminController.listBranches);
 // GET => /admin/updatebranches
 router.get("/updatebranches", adminController.updateBranch);
 
+// GET => /admin/listdepartments
+router.get("/listdepartments", adminController.listDepartments);
+
+// GET => /admin/updatedepartment
+router.get("/updatedepartment", adminController.updateDepartment);
+
 module.exports = router;
