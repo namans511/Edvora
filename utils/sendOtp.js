@@ -3,7 +3,7 @@ const Otp = require("../models/otp");
 
 module.exports = (email, userType) => {
   //generate otp
-  let otp = otpGenerator.generate(6, {
+  let otp = otpGenerator.generate(4, {
     alphabets: false,
     specialChars: false,
     upperCase: false,

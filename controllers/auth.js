@@ -87,9 +87,13 @@ exports.verifyOtp = (req, res, next) => {
           //generating tokens
           const refreshToken = tokenGenerator.generateRefreshToken(
             user.email,
+            userType,
             user.userKey
           );
-          const accessToken = tokenGenerator.generateAccessToken(user.email);
+          const accessToken = tokenGenerator.generateAccessToken(
+            user.email,
+            userType
+          );
 
           return res.status(200).json({
             message: "password correct, user added",
@@ -176,9 +180,13 @@ exports.login = (req, res, next) => {
         //generating tokens
         const refreshToken = tokenGenerator.generateRefreshToken(
           savedUser.email,
+          userType,
           savedUser.userKey
         );
-        const accessToken = tokenGenerator.generateAccessToken(savedUser.email);
+        const accessToken = tokenGenerator.generateAccessToken(
+          savedUser.email,
+          userType
+        );
         return res.status(200).json({
           message: "password correct",
           refreshToken,

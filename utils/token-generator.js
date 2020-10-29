@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-exports.generateRefreshToken = (email, userKey) => {
+exports.generateRefreshToken = (email, userType, userKey) => {
   const token = jwt.sign(
     {
-      type: "refresh",
+      userType: userType,
       email: email,
     },
     userKey
@@ -12,14 +12,14 @@ exports.generateRefreshToken = (email, userKey) => {
   return token;
 };
 
-exports.generateAccessToken = (email) => {
+exports.generateAccessToken = (email, userType) => {
   const token = jwt.sign(
     {
-      type: "access",
+      userType: userType,
       email: email,
     },
     process.env.APP_TOKEN_KEY,
-    { expiresIn: "1h" }
+    { expiresIn: "48h" }
   );
 
   return token;

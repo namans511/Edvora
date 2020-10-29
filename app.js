@@ -9,6 +9,7 @@ const app = express();
 
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
+const profileRoutes = require("./routes/profile");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 //Routing requests
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
+app.use("/profile", profileRoutes);
 
 //handling errors
 app.use((error, req, res, next) => {
