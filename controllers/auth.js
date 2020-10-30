@@ -37,6 +37,7 @@ exports.signup = (req, res, next) => {
         email: email,
         password: hashedPassword,
         isVerified: "false",
+        profileIsCompleted: "false",
         userKey: userKey,
       });
       user.save();
