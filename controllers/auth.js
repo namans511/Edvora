@@ -6,6 +6,8 @@ const { validationResult } = require("express-validator");
 //custom imports
 const Otp = require("../models/otp");
 const College = require("../models/college");
+const Student = require("../models/student");
+const Teacher = require("../models/teacher");
 const tokenGenerator = require("../utils/token-generator");
 const castUser = require("../utils/castUser");
 const saveAndSendOtp = require("../utils/sendOtp");
@@ -130,13 +132,22 @@ exports.login = (req, res, next) => {
     throw error;
   }
 
-  const { email, password, userType } = req.body;
-  const UserType = castUser(userType);
+  const { email, password } = req.body;
   let savedUser;
+  let userType = "teacher";
 
-  UserType.findOne({ email: email })
+  Student.findOne({ email: email })
     .then((user) => {
       //if user does not exist
+      if (!user) {
+        return Teacher.findOne({ email: email });
+      } else {
+        userType = "student";
+        return user;
+      }
+    })
+    .then((user) => {
+      savedUser = user;;
       if (!user) {
         const error = new Error("Login Failed");
         error.statusCode = 422;
@@ -157,11 +168,11 @@ exports.login = (req, res, next) => {
         error.data = {
           msg: "otp sent please verify yourself",
           location: "login",
-          email,
+          id: otp._id,
         };
         throw error;
       }
-      savedUser = user;
+
       return bcryct.compare(password, user.password);
     })
     .then((match) => {
@@ -192,6 +203,7 @@ exports.login = (req, res, next) => {
           refreshToken,
           accessToken,
           email,
+          type: userType
         });
       }
     })
