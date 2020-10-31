@@ -1,8 +1,10 @@
 const castUser = require("../utils/castUser");
 
+const redis = require("../utils/redis");
+
 exports.viewProfile = (req, res, next) => {
   const UserType = castUser(req.userType);
-
+  redis.set("foo", "bar");
   UserType.findOne({ email: req.email })
     .then((user) => {
       res.status(200).json({
