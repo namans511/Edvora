@@ -27,7 +27,7 @@ exports.updateProfile = (req, res, next) => {
       user.college = college;
       user.branch = branch;
       user.year = year;
-      user.profileIsCompleted = "true";
+      user.isProfileComplete = "true";
 
       return user.save();
     })

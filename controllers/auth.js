@@ -37,7 +37,7 @@ exports.signup = (req, res, next) => {
         email: email,
         password: hashedPassword,
         isVerified: "false",
-        profileIsCompleted: "false",
+        isProfileComplete: "false",
         userKey: userKey,
       });
       user.save();
@@ -60,7 +60,7 @@ exports.signup = (req, res, next) => {
 exports.verifyOtp = (req, res, next) => {
   const { email, otp } = req.body;
 
-  Otp.findOne({ email: email })
+  Otp.find({ email: email })
     .then((data) => {
       if (!data) {
         const error = new Error("Validation failed");
@@ -74,18 +74,19 @@ exports.verifyOtp = (req, res, next) => {
         throw error;
       }
 
-      const { userType } = data;
+      const savedOtp = data[data.length - 1];
+      const { userType } = savedOtp;
       const UserType = castUser(userType);
 
       // check if entered otp is valid
-      if (data.otp == otp) {
+      if (savedOtp.otp == otp) {
         //verify the user
-        UserType.findOne({ email: data.email }).then((user) => {
+        UserType.findOne({ email: email }).then((user) => {
           user.isVerified = "true";
           user.save();
 
           //removing otp from database
-          data.remove();
+          savedOtp.remove();
 
           //generating tokens
           const refreshToken = tokenGenerator.generateRefreshToken(
@@ -169,7 +170,6 @@ exports.login = (req, res, next) => {
         error.data = {
           msg: "otp sent please verify yourself",
           location: "login",
-          id: otp._id,
         };
         throw error;
       }
@@ -204,7 +204,8 @@ exports.login = (req, res, next) => {
           refreshToken,
           accessToken,
           email,
-          type: userType
+          type: userType,
+          isProfileComplete: savedUser.isProfileComplete,
         });
       }
     })

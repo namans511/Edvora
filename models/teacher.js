@@ -19,7 +19,7 @@ const teacherSchema = new Schema({
     type: String,
     require: true,
   },
-  profileIsCompleted: {
+  isProfileComplete: {
     type: String,
     require: true,
   },
