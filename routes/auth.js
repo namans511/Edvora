@@ -9,7 +9,11 @@ const Teacher = require("../models/teacher");
 const authController = require("../controllers/auth");
 
 // POST => /auth/verifyotp
-router.post("/verifyotp", authController.verifyOtp);
+router.post(
+  "/verifyotp",
+  [body("email").isEmail().withMessage("Invalid email").normalizeEmail()],
+  authController.verifyOtp
+);
 
 // POST => /auth/signup
 router.post(
