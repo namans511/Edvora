@@ -7,6 +7,7 @@ const router = express.Router();
 const Student = require("../models/student");
 const Teacher = require("../models/teacher");
 const authController = require("../controllers/auth");
+const isAuthRefresh = require("../middleware/isAuthRefresh");
 
 // POST => /auth/verifyotp
 router.post(
@@ -52,5 +53,8 @@ router.post(
   ],
   authController.login
 );
+
+// GET => /auth/getaccesstoken
+router.get("/getaccesstoken", isAuthRefresh, authController.getAccesstoken);
 
 module.exports = router;

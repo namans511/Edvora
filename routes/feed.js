@@ -11,6 +11,6 @@ const feedController = require("../controllers/feed");
 router.post("/ask", isAuth, feedController.ask);
 
 // POST => /feed/view
-router.post("/view", isAuth, feedController.view);
+router.get("/view", isAuth, feedController.view);
 
 module.exports = router;

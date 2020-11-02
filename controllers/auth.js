@@ -2,6 +2,7 @@
 const bcryct = require("bcryptjs");
 const otpGenerator = require("otp-generator");
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 //custom imports
 const Otp = require("../models/otp");
@@ -215,4 +216,13 @@ exports.login = (req, res, next) => {
       }
       next(err);
     });
+};
+
+exports.getAccesstoken = (req, res, next) => {
+  const { email, userType } = req;
+  const accessToken = tokenGenerator.generateAccessToken(email, userType);
+
+  res.status(200).json({
+    accessToken,
+  });
 };

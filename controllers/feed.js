@@ -42,9 +42,7 @@ exports.view = (req, res, next) => {
   Feed.find()
     .populate("postedBy.id", "name college", UserType)
     .then((data) => {
-      res.status(200).json({
-        data,
-      });
+      res.status(200).json(data);
     })
     .catch((err) => {
       if (!err.statusCode) {
