@@ -1,3 +1,4 @@
+const { find } = require("../models/feed");
 const Feed = require("../models/feed");
 const castUser = require("../utils/castUser");
 
@@ -9,6 +10,7 @@ exports.ask = (req, res, next) => {
 
   let asker;
   UserType.findOne({ email: email })
+    .select()
     .then((user) => {
       asker = user;
       const id = user._id;
@@ -51,3 +53,13 @@ exports.view = (req, res, next) => {
       next(err);
     });
 };
+
+// exports.answer = (req, res, next) => {
+//   const { email, userType } = req;
+//   const { id, answer } = req.body;
+
+//   const UserType = castUser(userType);
+//   Feed.findById(id).then((question) => {
+//     UserType.findOne({ email: email }).then((user) => {});
+//   });
+// };
