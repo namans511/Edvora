@@ -10,6 +10,9 @@ const feedController = require("../controllers/feed");
 // POST => /feed/ask
 router.post("/ask", isAuth, feedController.ask);
 
+// GET => /feed/view/:questionId
+router.get("/view/:questionId", isAuth, feedController.viewDetails)
+
 // GET => /feed/view
 router.get("/view", isAuth, feedController.view);
 

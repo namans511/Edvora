@@ -1,18 +1,18 @@
 const { find } = require("../models/feed");
 const Feed = require("../models/feed");
 const castUser = require("../utils/castUser");
+const capitalise = require("../helper/capitalise");
+// const Student = require("../models/student");
+// const Teacher = require("../models/teacher");
 
 exports.ask = (req, res, next) => {
   const { email, userType } = req;
   const { question, subject, topic, imageUrl } = req.body;
 
   const UserType = castUser(userType);
-
-  let asker;
+  console.log("UserType=", UserType);
   UserType.findOne({ email: email })
-    .select()
     .then((user) => {
-      asker = user;
       const id = user._id;
       const feed = new Feed({
         question: question,
@@ -20,7 +20,7 @@ exports.ask = (req, res, next) => {
         topic: topic,
         postedBy: {
           id: id,
-          userType: userType,
+          userType: capitalise(userType),
         },
         imageUrl: imageUrl,
       });
@@ -40,10 +40,8 @@ exports.ask = (req, res, next) => {
 };
 
 exports.view = (req, res, next) => {
-  const { userType } = req;
-  const UserType = castUser(userType);
   Feed.find()
-    .populate("postedBy.id", "name college", UserType)
+    .populate("postedBy.id", "name college")
     .then((data) => {
       data.reverse();
       res.status(200).json(data);
@@ -58,14 +56,13 @@ exports.view = (req, res, next) => {
 
 exports.answer = (req, res, next) => {
   const { email, userType } = req;
-  const { id, answer } = req.body;
-  console.log("req=", req);
+  const { questionId, answer } = req.body;
   console.log("req.body=", req.body);
 
   const UserType = castUser(userType);
 
   let ques;
-  Feed.findById(id)
+  Feed.findById(questionId)
     .then((question) => {
       //TODO: add relevant errors if documents not found
       ques = question;
@@ -73,9 +70,10 @@ exports.answer = (req, res, next) => {
     })
     .then((user) => {
       let ans = {
-        id: user._id,
-        userType: userType,
+        userType: capitalise(userType),
+        user: user._id,
         answer: answer,
+        answeredAt : (new Date()).toISOString()
       };
       let answers = [...ques.answers, ans];
       ques.answers = answers;
@@ -91,5 +89,23 @@ exports.answer = (req, res, next) => {
         err.statusCode = 500;
       }
       next(err);
-    });;
+    });
+};
+
+exports.viewDetails = (req, res, next) => {
+  const questionId = req.params.questionId;
+
+  Feed.findById(questionId)
+    .select("-answers._id")
+    .populate("postedBy.id", "name college")
+    .populate("answers.user", "name college")
+    .then((question) => {
+      res.status(200).json(question);
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
 };

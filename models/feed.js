@@ -7,10 +7,36 @@ const FeedSchema = new Schema(
     question: { type: String, required: true },
     subject: String,
     topic: String,
-    postedBy: { id: Schema.Types.ObjectId, userType: String },
-    answers: [{ id: Schema.Types.ObjectId, userType: String, answer: String }],
-    likes: [{ id: Schema.Types.ObjectId, userType: String }],
-    bookmarks: [{ id: Schema.Types.ObjectId, userType: String }],
+    postedBy: {
+      userType: String,
+      id: {
+        type: Schema.Types.ObjectId,
+        refPath: "postedBy.userType",
+      },
+    },
+    answers: [
+      {
+        userType: String,
+        user: {
+          type: Schema.Types.ObjectId,
+          refPath: "answers.userType",
+        },
+        answer: String,
+        answeredAt: String,
+      },
+    ],
+    likes: [
+      {
+        id: Schema.Types.ObjectId,
+        userType: String,
+      },
+    ],
+    bookmarks: [
+      {
+        id: Schema.Types.ObjectId,
+        userType: String,
+      },
+    ],
     imageUrl: String,
   },
   { timestamps: true }
