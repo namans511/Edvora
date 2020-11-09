@@ -7,8 +7,11 @@ const router = express.Router();
 const profileController = require("../controllers/profile");
 const isAuth = require("../middleware/isAuth");
 
+// GET => /profile/view/userId
+router.get("/view/:userId", isAuth, profileController.viewProfile);
+
 // GET => /profile/view
-router.get("/view", isAuth, profileController.viewProfile);
+router.get("/view", isAuth, profileController.viewOwnProfile);
 
 // POST => /profile/update
 router.post("/update", isAuth, profileController.updateProfile);

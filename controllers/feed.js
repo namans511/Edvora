@@ -41,6 +41,7 @@ exports.ask = (req, res, next) => {
 
 exports.view = (req, res, next) => {
   Feed.find()
+    .select("-answers")
     .populate("postedBy.id", "name college")
     .then((data) => {
       data.reverse();
@@ -100,6 +101,7 @@ exports.viewDetails = (req, res, next) => {
     .populate("postedBy.id", "name college")
     .populate("answers.user", "name college")
     .then((question) => {
+      question.answers.reverse();
       res.status(200).json(question);
     })
     .catch((err) => {
