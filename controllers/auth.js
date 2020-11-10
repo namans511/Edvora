@@ -63,12 +63,12 @@ exports.verifyOtp = (req, res, next) => {
 
   Otp.find({ email: email })
     .then((data) => {
-      if (!data) {
+      if (data.length == 0) {
         const error = new Error("Validation failed");
         error.statusCode = 422;
         error.data = {
           value: email,
-          msg: "invalid id",
+          msg: "invalid email",
           param: "email",
           location: "otp",
         };
@@ -104,6 +104,7 @@ exports.verifyOtp = (req, res, next) => {
             message: "password correct, user added",
             refreshToken,
             accessToken,
+            userId: user._id,
           });
         });
       } else {
@@ -207,6 +208,7 @@ exports.login = (req, res, next) => {
           email,
           type: userType,
           isProfileComplete: savedUser.isProfileComplete,
+          userId: savedUser._id,
         });
       }
     })
