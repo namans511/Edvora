@@ -197,3 +197,80 @@ exports.deleteQuestion = (req, res, next) => {
       next(err);
     });
 };
+
+exports.deleteAnswer = (req, res, next) => {
+  const { questionId, answerId } = req.body;
+
+  Feed.findById(questionId)
+    .populate("answers.user", "email")
+    .then((question) => {
+      const index = question.answers.findIndex((ans) => {
+        return ans._id == answerId;
+      });
+
+      if (index == -1) {
+        const error = new Error("Answer not found");
+        error.statusCode = 422;
+        throw error;
+      }
+
+      if (question.answers[index].user.email != req.email) {
+        const error = new Error("Cannot delete answer");
+        error.statusCode = 422;
+        error.data = {
+          msg: "You did not post this answer",
+          location: "delete answer",
+        };
+        throw error;
+      }
+      question.answers.splice(index, 1);
+      question.save();
+      res.json({
+        msg: "answer deleted",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.editAnswer = (req, res, next) => {
+  const { questionId, answerId, answer } = req.body;
+
+  Feed.findById(questionId)
+    .populate("answers.user", "email")
+    .then((question) => {
+      const index = question.answers.findIndex((ans) => {
+        return ans._id == answerId;
+      });
+
+      if (index == -1) {
+        const error = new Error("Answer not found");
+        error.statusCode = 422;
+        throw error;
+      }
+      if (question.answers[index].user.email != req.email) {
+        const error = new Error("Cannot edit answer");
+        error.statusCode = 422;
+        error.data = {
+          msg: "You did not post this answer",
+          location: "edit answer",
+        };
+        throw error;
+      }
+      question.answers[index].answer = answer;
+      question.save();
+      res.json({
+        msg: "answer edited",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};

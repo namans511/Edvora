@@ -25,4 +25,8 @@ router.patch("/editquestion", isAuth, feedController.editQuestion);
 // DELETE => /feed/deletequestion
 router.delete("/deletequestion", isAuth, feedController.deleteQuestion)
 
+router.delete("/deleteanswer", isAuth, feedController.deleteAnswer);
+
+router.patch("/editanswer", isAuth, feedController.editAnswer);
+
 module.exports = router;
