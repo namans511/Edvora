@@ -6,10 +6,12 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+// importing routers
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const profileRoutes = require("./routes/profile");
 const feedRoutes = require("./routes/feed");
+const adminBro = require("./routes/adminbro.router");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -27,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 //Routing requests
+app.use("/adminbro", adminBro);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/profile", profileRoutes);
@@ -44,7 +47,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-//connecting to mongodb database
+// connecting to mongodb database
 mongoose
   .connect(process.env.MONGO_API_KEY, {
     useUnifiedTopology: true,
