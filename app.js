@@ -11,6 +11,7 @@ const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const profileRoutes = require("./routes/profile");
 const feedRoutes = require("./routes/feed");
+const libraryRoutes = require("./routes/library");
 const adminBro = require("./routes/adminbro.router");
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -34,6 +35,7 @@ app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/profile", profileRoutes);
 app.use("/feed", feedRoutes);
+app.use("/library", libraryRoutes);
 
 //handling errors
 app.use((error, req, res, next) => {

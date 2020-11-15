@@ -53,7 +53,7 @@ exports.viewOwnProfile = (req, res, next) => {
 
 
 exports.updateProfile = (req, res, next) => {
-  const { college, branch, year } = req.body;
+  const { college, branch, year, imageUrl } = req.body;
   const UserType = castUser(req.userType);
 
   UserType.findOne({ email: req.email })
@@ -61,6 +61,7 @@ exports.updateProfile = (req, res, next) => {
       user.college = college;
       user.branch = branch;
       user.year = year;
+      user.imageUrl = imageUrl;
       user.isProfileComplete = "true";
 
       return user.save();

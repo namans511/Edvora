@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-exports.generateRefreshToken = (email, userType, userKey) => {
+exports.generateRefreshToken = (email, userId, userType, userKey) => {
   const token = jwt.sign(
     {
+      userId: userId,
       userType: userType,
       email: email,
     },

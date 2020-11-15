@@ -30,6 +30,7 @@ const studentSchema = new Schema({
   college: String,
   year: Number,
   branch: String,
+  imageUrl: String,
 });
 
 module.exports = mongoose.model("Student", studentSchema);

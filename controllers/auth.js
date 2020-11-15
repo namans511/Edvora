@@ -92,6 +92,7 @@ exports.verifyOtp = (req, res, next) => {
           //generating tokens
           const refreshToken = tokenGenerator.generateRefreshToken(
             user.email,
+            user._id,
             userType,
             user.userKey
           );
@@ -194,6 +195,7 @@ exports.login = (req, res, next) => {
         //generating tokens
         const refreshToken = tokenGenerator.generateRefreshToken(
           savedUser.email,
+          savedUser._id,
           userType,
           savedUser.userKey
         );
