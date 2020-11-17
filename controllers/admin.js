@@ -1,11 +1,12 @@
 const College = require("../models/college");
 const Branch = require("../models/branch");
 const Department = require("../models/department");
-
+const Subject = require("../models/subject");
 
 const collegeList = require("../utils/college-list");
 const branchList = require("../utils/branch-list");
 const departmentList = require("../utils/department-list");
+const subjectList = require("../data/subject-list");
 
 exports.listColleges = (req, res, next) => {
   College.find()
@@ -122,6 +123,47 @@ exports.updateDepartment = (req, res, next) => {
   }
   console.log(list);
   Department.insertMany(list)
+    .then((doc) => {
+      res.status(200).json({
+        message: "hoagaya bhai",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.listSubjects = (req, res, next) => {
+  Subject.find()
+    .select("name -_id")
+    .then((list) => {
+      res.status(200).json(list);
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.updateSubjects = (req, res, next) => {
+  let list = [];
+  for (const code in subjectList) {
+    if (subjectList.hasOwnProperty(code)) {
+      const department = subjectList[code];
+      let obj = {
+        code: code,
+        name: department,
+      };
+      list.push(obj);
+    }
+  }
+  console.log(list);
+  Subject.insertMany(list)
     .then((doc) => {
       res.status(200).json({
         message: "hoagaya bhai",
