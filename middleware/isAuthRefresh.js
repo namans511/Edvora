@@ -27,6 +27,7 @@ module.exports = (req, res, next) => {
       key = user.userKey;
       req.email = user.email;
       req.userType = userType;
+      req.userId = user._id;
       try {
         verifiedToken = jwt.verify(token, key);
       } catch (err) {

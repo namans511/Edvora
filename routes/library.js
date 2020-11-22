@@ -8,7 +8,7 @@ const libraryController = require("../controllers/library");
 const isAuth = require("../middleware/isAuth");
 
 // POST => /library/add
-router.post("/add", libraryController.add);
+router.post("/add", isAuth, libraryController.add);
 
 // GET => /library/viewall
 router.get("/viewall", libraryController.viewall);

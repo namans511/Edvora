@@ -13,11 +13,12 @@ exports.generateRefreshToken = (email, userId, userType, userKey) => {
   return token;
 };
 
-exports.generateAccessToken = (email, userType) => {
+exports.generateAccessToken = (email, userType, userId) => {
   const token = jwt.sign(
     {
       userType: userType,
       email: email,
+      userId: userId,
     },
     process.env.APP_TOKEN_KEY,
     { expiresIn: "48h" }

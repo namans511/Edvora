@@ -20,6 +20,7 @@ module.exports = (req, res, next) => {
     error.statusCode = 502;
     throw error;
   }
+  req.userId = decodedToken.userId;
   req.email = decodedToken.email;
   req.userType = decodedToken.userType;
   // console.log("yess token" + req.userId);

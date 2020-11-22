@@ -98,13 +98,16 @@ exports.verifyOtp = (req, res, next) => {
           );
           const accessToken = tokenGenerator.generateAccessToken(
             user.email,
-            userType
+            userType,
+            user._id
           );
 
           return res.status(200).json({
             message: "password correct, user added",
             refreshToken,
             accessToken,
+            name: user.name,
+            email: user.email,
             userId: user._id,
           });
         });
@@ -201,13 +204,16 @@ exports.login = (req, res, next) => {
         );
         const accessToken = tokenGenerator.generateAccessToken(
           savedUser.email,
-          userType
+          userType,
+          savedUser._id
         );
         return res.status(200).json({
           message: "password correct",
           refreshToken,
           accessToken,
           email,
+          name: savedUser.name,
+          email: savedUser.email,
           type: userType,
           isProfileComplete: savedUser.isProfileComplete,
           userId: savedUser._id,
@@ -223,8 +229,12 @@ exports.login = (req, res, next) => {
 };
 
 exports.getAccesstoken = (req, res, next) => {
-  const { email, userType } = req;
-  const accessToken = tokenGenerator.generateAccessToken(email, userType);
+  const { email, userType, userId } = req;
+  const accessToken = tokenGenerator.generateAccessToken(
+    email,
+    userType,
+    userId
+  );
 
   res.status(200).json({
     accessToken,

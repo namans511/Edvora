@@ -10,6 +10,11 @@ const LibrarySchema = new Schema(
     subject: String,
     type: String,
     url: String,
+    userType: String,
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      refPath: "userType",
+    },
   },
   { timestamps: true }
 );

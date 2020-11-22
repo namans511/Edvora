@@ -1,13 +1,18 @@
 const Library = require("../models/library");
+const capitalise = require("../helper/capitalise");
 
 exports.add = (req, res, next) => {
   const { title, type, year, subject, url } = req.body;
+  const { userId, userType } = req;
+  console.log(userId, userType);
   Library.create({
     title,
     type,
     year,
     subject,
     url,
+    userType: capitalise(userType),
+    createdBy: userId,
   })
     .then((notes) => {
       res.json({
@@ -24,6 +29,7 @@ exports.add = (req, res, next) => {
 
 exports.viewall = (req, res, next) => {
   Library.find()
+    .populate("createdBy", "name email college")
     .then((notes) => {
       res.json(notes);
     })
