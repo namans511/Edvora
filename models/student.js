@@ -27,6 +27,7 @@ const studentSchema = new Schema({
     type: String,
     required: true,
   },
+  subjects: [String],
   college: String,
   year: Number,
   branch: String,

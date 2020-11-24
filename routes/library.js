@@ -16,4 +16,6 @@ router.get("/viewall", libraryController.viewall);
 // POST => /library/search
 router.post("/search", libraryController.search);
 
+router.post("/addbookmarks", isAuth, libraryController.bookmark);
+
 module.exports = router;
