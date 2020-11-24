@@ -28,6 +28,7 @@ const teacherSchema = new Schema({
     required: true,
   },
   subjects: [String],
+  notes: [{ type: Schema.Types.ObjectId, ref: "Library" }],
   college: String,
   year: Number,
   branch: String,
