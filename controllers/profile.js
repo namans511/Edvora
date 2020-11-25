@@ -53,23 +53,45 @@ exports.viewOwnProfile = (req, res, next) => {
 
 
 exports.updateProfile = (req, res, next) => {
-  const { college, branch, year, imageUrl } = req.body;
   const UserType = castUser(req.userType);
 
-  UserType.findOne({ email: req.email })
+  UserType.findById(req.userId)
     .then((user) => {
-      user.college = college;
-      user.branch = branch;
-      user.year = year;
-      user.imageUrl = imageUrl;
-      user.isProfileComplete = "true";
-
+      for (const key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+          const element = req.body[key];
+          user.set(key, element);
+        }
+      }
       return user.save();
     })
     .then((user) => {
       res.status(200).json({
         message: "Profile updated successfully",
       });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getBookmark = (req, res, next) => {
+  const { type } = req.params;
+  const { userId, userType } = req;
+  const UserType = castUser(userType);
+
+  UserType.findById(userId)
+    .populate()
+    .then((user) => {
+      if (type == "subjects") return user;
+      else return user.execPopulate(type);
+    })
+    .then((data) => {
+      console.log(data[type]);
+      res.json(data[type]);
     })
     .catch((err) => {
       if (!err.statusCode) {

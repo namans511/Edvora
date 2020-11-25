@@ -25,8 +25,13 @@ router.patch("/editquestion", isAuth, feedController.editQuestion);
 // DELETE => /feed/deletequestion
 router.delete("/deletequestion", isAuth, feedController.deleteQuestion)
 
+// DELETE => /feed/deleteanswer
 router.delete("/deleteanswer", isAuth, feedController.deleteAnswer);
 
+// PATCH => /feed/editanswer
 router.patch("/editanswer", isAuth, feedController.editAnswer);
+
+// POST => /feed/savepost
+router.post("/savepost",isAuth, feedController.savePost);
 
 module.exports = router;

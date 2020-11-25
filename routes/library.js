@@ -16,7 +16,7 @@ router.get("/viewall", libraryController.viewall);
 // POST => /library/search
 router.post("/search", libraryController.search);
 
-// POST => /library/addsubject
+// POST => /library/bookmarksubject
 router.post("/bookmarksubject", isAuth, libraryController.bookmarkSubject);
 
 // DELETE => /library/deletesubject
@@ -29,7 +29,7 @@ router.delete(
 // GET => /library/viewsubjects
 router.get("/viewsubjects", isAuth, libraryController.viewSubjects);
 
-// POST => /library/bookmarknotes
+// POST => /library/bookmarknote
 router.post("/bookmarknote", isAuth, libraryController.bookmarkNotes);
 
 //GET => /library/viewnotes

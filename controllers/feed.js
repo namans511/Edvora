@@ -274,3 +274,34 @@ exports.editAnswer = (req, res, next) => {
       next(err);
     });
 };
+
+exports.savePost = (req, res, next) => {
+  const { feedId } = req.body;
+  const { userId, userType } = req;
+  const UserType = castUser(userType);
+  console.log("userId");
+  UserType.findById(userId)
+    .then((user) => {
+      console.log(user);
+      const index = user.savedPosts.findIndex((id) => id == feedId);
+
+      if (index != -1) {
+        const error = new Error("Post already saved");
+        error.statusCode = 422;
+        throw error;
+      }
+
+      user.savedPosts = [...user.savedPosts, feedId];
+      user.save();
+      res.json({
+        message: "post saved",
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+

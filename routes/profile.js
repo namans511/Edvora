@@ -16,4 +16,6 @@ router.get("/view", isAuth, profileController.viewOwnProfile);
 // POST => /profile/update
 router.post("/update", isAuth, profileController.updateProfile);
 
+router.get("/getbookmarks/:type", isAuth, profileController.getBookmark);
+
 module.exports = router;
