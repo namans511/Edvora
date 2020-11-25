@@ -90,7 +90,6 @@ exports.getBookmark = (req, res, next) => {
       else return user.execPopulate(type);
     })
     .then((data) => {
-      console.log(data[type]);
       res.json(data[type]);
     })
     .catch((err) => {

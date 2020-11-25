@@ -40,7 +40,7 @@ exports.ask = (req, res, next) => {
 
 exports.view = (req, res, next) => {
   Feed.find()
-    .select("-answers")
+    .select("-answers -bookmarks._id")
     .populate("postedBy.id", "name college imageUrl")
     .then((data) => {
       data.reverse();
@@ -279,10 +279,8 @@ exports.savePost = (req, res, next) => {
   const { feedId } = req.body;
   const { userId, userType } = req;
   const UserType = castUser(userType);
-  console.log("userId");
   UserType.findById(userId)
     .then((user) => {
-      console.log(user);
       const index = user.savedPosts.findIndex((id) => id == feedId);
 
       if (index != -1) {
@@ -290,6 +288,22 @@ exports.savePost = (req, res, next) => {
         error.statusCode = 422;
         throw error;
       }
+
+      Feed.findById(feedId)
+        .then((feed) => {
+          const boookmark = {
+            userId: userId,
+            userType: capitalise(userType),
+          };
+          feed.bookmarks = [...feed.bookmarks, boookmark];
+          feed.save();
+        })
+        .catch((err) => {
+          if (!err.statusCode) {
+            err.statusCode = 500;
+          }
+          next(err);
+        });
 
       user.savedPosts = [...user.savedPosts, feedId];
       user.save();

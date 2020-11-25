@@ -27,13 +27,19 @@ const FeedSchema = new Schema(
     ],
     likes: [
       {
-        id: Schema.Types.ObjectId,
+        userId: {
+          type: Schema.Types.ObjectId,
+          refPath: "likes.userType",
+        },
         userType: String,
       },
     ],
     bookmarks: [
       {
-        id: Schema.Types.ObjectId,
+        userId: {
+          type: Schema.Types.ObjectId,
+          refPath: "likes.userType",
+        },
         userType: String,
       },
     ],
