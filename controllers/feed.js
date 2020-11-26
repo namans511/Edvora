@@ -291,11 +291,7 @@ exports.savePost = (req, res, next) => {
 
       Feed.findById(feedId)
         .then((feed) => {
-          const boookmark = {
-            userId: userId,
-            userType: capitalise(userType),
-          };
-          feed.bookmarks = [...feed.bookmarks, boookmark];
+          feed.bookmarks = [...feed.bookmarks, userId];
           feed.save();
         })
         .catch((err) => {

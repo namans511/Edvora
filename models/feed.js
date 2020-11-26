@@ -34,15 +34,7 @@ const FeedSchema = new Schema(
         userType: String,
       },
     ],
-    bookmarks: [
-      {
-        userId: {
-          type: Schema.Types.ObjectId,
-          refPath: "likes.userType",
-        },
-        userType: String,
-      },
-    ],
+    bookmarks: [Schema.Types.ObjectId],
     imageUrl: String,
   },
   { timestamps: true }
