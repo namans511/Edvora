@@ -84,13 +84,22 @@ exports.getBookmark = (req, res, next) => {
   const UserType = castUser(userType);
 
   UserType.findById(userId)
-    .populate()
     .then((user) => {
       if (type == "subjects") return user;
-      else return user.execPopulate(type);
+      else if(type=="notes" ) 
+      return user.execPopulate({
+        path: type,
+        populate: { path: "createdBy", select: "name email college imageUrl" },
+      });
+      else 
+      return user.execPopulate({
+        path: type,
+        populate: { path: "postedBy.id", select: "name email college imageUrl" },
+      });
     })
     .then((data) => {
       res.json(data[type]);
+    ;
     })
     .catch((err) => {
       if (!err.statusCode) {
