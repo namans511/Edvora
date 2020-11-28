@@ -1,5 +1,6 @@
 const otpGenerator = require("otp-generator");
 const Otp = require("../models/otp");
+const Emails = require("./email");
 
 module.exports = (email, userType) => {
   //generate otp
@@ -21,7 +22,7 @@ module.exports = (email, userType) => {
   console.log("otp=" + userOtp.otp);
 
   //TODO: send otp to user via email
-  // Emails.sendOtpEmail(email, otp);
+  Emails.sendOtpEmail(email, otp);
 
   return userOtp;
 };

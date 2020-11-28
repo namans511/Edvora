@@ -59,7 +59,7 @@ mongoose
     useNewUrlParser: true,
   })
   .then((result) => {
-    let port = process.env.PORT || 3000;
+    let port = process.env.PORT || 8080;
     const server = app.listen(port);
     console.log("Server up and running on port " + port);
     wsServer = new SocketServer({ httpServer: server });
