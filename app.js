@@ -2,6 +2,9 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const SocketServer = require("websocket").server;
+const http = require("http");
+const Message = require("./models/message");
 
 const express = require("express");
 const app = express();
@@ -56,9 +59,45 @@ mongoose
     useNewUrlParser: true,
   })
   .then((result) => {
-    let port = process.env.PORT || 8080;
-    app.listen(port);
+    let port = process.env.PORT || 3000;
+    const server = app.listen(port);
     console.log("Server up and running on port " + port);
+    wsServer = new SocketServer({ httpServer: server });
+
+    const connections = [];
+    const rooms = [];
+
+    wsServer.on("request", (req) => {
+      // console.log(req);
+      const connection = req.accept();
+      console.log("new connection");
+      // console.log(connection);
+      connections.push(connection);
+
+      connection.on("create-room", (req) => {
+        const roomname = "baba"; // change
+        if (!Message.exists({ roomname: roomname }))
+          Message.create({
+            roomname: roomname,
+          });
+      });
+
+      connection.on("message", (mes) => {
+        console.log(mes);
+        // console.log(decodeURI(mes.utf8Data), typeof decodeURI(mes.utf8Data));
+        const message = decodeURI(mes.utf8Data);
+        const json = JSON.parse(message);
+        // console.log("name=", json.name);
+        connections.forEach((element) => {
+          if (element != connection) element.sendUTF(mes.utf8Data);
+        });
+      });
+
+      connection.on("close", (resCode, des) => {
+        console.log("connection closed");
+        connections.splice(connections.indexOf(connection), 1);
+      });
+    });
   })
   .catch((err) => {
     console.log(err);
