@@ -1,2 +1,3 @@
 # Edvora
-TwoWaits Clone
+
+An application for college students to meet new people and share resources
